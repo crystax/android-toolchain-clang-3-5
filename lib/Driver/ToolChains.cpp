@@ -193,7 +193,7 @@ static bool isSoftFloatABI(const ArgList &Args) {
                            options::OPT_mfloat_abi_EQ);
   if (!A)
     return false;
- 
+
   return A->getOption().matches(options::OPT_msoft_float) ||
          (A->getOption().matches(options::OPT_mfloat_abi_EQ) &&
           A->getValue() == StringRef("soft"));
@@ -1884,7 +1884,7 @@ static bool findMIPSMultilibs(const llvm::Triple &TargetTriple, StringRef Path,
       .flag("+mnan=2008");
 
     FSFMipsMultilibs = MultilibSet()
-      .Either(MArchMips32, MArchMicroMips, 
+      .Either(MArchMips32, MArchMicroMips,
               MArchMips64r2, MArchMips64, MArchDefault)
       .Maybe(Mips16)
       .FilterOut("/mips64/mips16")
@@ -1964,6 +1964,7 @@ static bool findMIPSMultilibs(const llvm::Triple &TargetTriple, StringRef Path,
 
   MultilibSet AndroidMipsMultilibs = MultilibSet()
     .Maybe(Multilib("/mips-r2").flag("+march=mips32r2"))
+    .Maybe(Multilib("/mips64-r2").flag("+march=mips64r2"))
     .FilterOut(NonExistent);
 
   MultilibSet DebianMipsMultilibs;
@@ -2696,7 +2697,7 @@ FreeBSD::GetCXXStdlibType(const ArgList &Args) const {
     getDriver().Diag(diag::err_drv_invalid_stdlib_name)
       << A->getAsString(Args);
   }
-  if (getTriple().getOSMajorVersion() >= 10) 
+  if (getTriple().getOSMajorVersion() >= 10)
     return ToolChain::CST_Libcxx;
   return ToolChain::CST_Libstdcxx;
 }
